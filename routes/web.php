@@ -23,4 +23,8 @@ use App\Http\Controllers\PostController;
 Route::resource('users', UserController::class);
 Route::resource('posts', PostController::class)->middleware('auth');
 
+use App\Http\Controllers\ProductController;
+
+Route::resource('products', ProductController::class);
+
 require __DIR__.'/auth.php';

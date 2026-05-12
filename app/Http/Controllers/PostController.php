@@ -20,11 +20,36 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'body' => 'required',
+        ]);
         Post::create([
             'title' => $request->title,
             'body' => $request->body,
             'user_id' => auth()->id(),
         ]);
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.index')->with('success', 'Post created successfully.');
+    }
+
+    public function edit(Post $post)
+    {
+        return view('posts.edit', compact('post'));
+    }
+
+    public function update(Request $request, Post $post)
+    {
+        $request->validate([
+            'title' => 'required',
+            'body' => 'required',
+        ]);
+        $post->update($request->all());
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
+    }
+
+    public function destroy(Post $post)
+    {
+        $post->delete();
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
     }
 }

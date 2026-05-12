@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,12 +8,35 @@
 <body>
     <h1>List of Posts</h1>
     <a href="{{ route('posts.create') }}">Add New Post</a>
-    <ul>
-        @foreach ($posts as $post)
-            <li>
-                <strong>{{ $post->title }}</strong> - {{ $post->body }}
-            </li>
-        @endforeach
-    </ul>
+
+    @if(session('success'))
+        <p style="color:green">{{ session('success') }}</p>
+    @endif
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Body</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($posts as $post)
+            <tr>
+                <td>{{ $post->title }}</td>
+                <td>{{ $post->body }}</td>
+                <td>
+                    <a href="{{ route('posts.edit', $post->id) }}">Edit</a>
+                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </body>
 </html>
